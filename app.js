@@ -1276,11 +1276,11 @@
             credit: 15111.78,
             debit: ''
         });
-    }*/
+    }
 
     loadUIState();
     render();
-
+*/
     // Redraw charts on resize
     let resizeTimer;
     window.addEventListener('resize', () => {
