@@ -1267,7 +1267,7 @@
     setCurrentMonth();
     
     // Seed initial balance if empty
-    if (manager.getAll().length === 0) {
+    /*if (manager.getAll().length === 0) {
         manager.add({
             id: generateId(),
             date: todayStr(),
@@ -1276,7 +1276,7 @@
             credit: 15111.78,
             debit: ''
         });
-    }
+    }*/
 
     loadUIState();
     render();
