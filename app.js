@@ -344,7 +344,7 @@
 
             const headerRow = document.createElement('tr');
             headerRow.className = 'date-group-header';
-            
+
             const isCollapsed = uiState.collapsedDates.includes(date);
             const icon = isCollapsed ? '▶' : '▼';
 
@@ -372,12 +372,12 @@
                     uiState.collapsedDates.push(date);
                     e.target.textContent = '▶';
                 }
-                
+
                 const children = ledgerBody.querySelectorAll(`.date-child-${date}`);
                 children.forEach(c => {
                     c.style.display = currentlyCollapsed ? '' : 'none';
                 });
-                
+
                 saveUIState();
             });
 
@@ -397,7 +397,7 @@
                 row.dataset.id = tx.id;
                 row.className = `date-child-${date}`;
                 if (isCollapsed) row.style.display = 'none';
-                
+
                 const balance = balanceMap[tx.id] || 0;
                 const balanceClass = balance >= 0 ? 'positive' : 'negative';
 
@@ -758,15 +758,15 @@
         }
     });
 
-    filterCategory.addEventListener('change', () => { 
-        selectedIds.clear(); 
+    filterCategory.addEventListener('change', () => {
+        selectedIds.clear();
         saveUIState();
-        render(); 
+        render();
     });
-    filterProfile.addEventListener('change', () => { 
-        selectedIds.clear(); 
+    filterProfile.addEventListener('change', () => {
+        selectedIds.clear();
         saveUIState();
-        render(); 
+        render();
     });
 
     selectAllCheck.addEventListener('change', (e) => {
@@ -1265,22 +1265,10 @@
 
     // ---- Init ----
     setCurrentMonth();
-    
-    // Seed initial balance if empty
-    /*if (manager.getAll().length === 0) {
-        manager.add({
-            id: generateId(),
-            date: todayStr(),
-            description: 'Original Balance',
-            category: 'Other',
-            credit: 15111.78,
-            debit: ''
-        });
-    }
 
     loadUIState();
     render();
-*/
+
     // Redraw charts on resize
     let resizeTimer;
     window.addEventListener('resize', () => {
