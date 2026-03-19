@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyFlow — Personal Finance Tracker</title>
+    <meta name="description"
+        content="Track your daily income and expenses with a beautiful spreadsheet-style money management app.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Animated background blobs -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <div class="logo-icon">₹</div>
+                <div>
+                    <h1>MoneyFlow</h1>
+                    <p class="tagline">Your personal finance tracker</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="current-month" id="currentMonth"></div>
+            </div>
+        </header>
+
+        <!-- Dashboard Stats -->
+        <section class="dashboard" id="dashboard">
+            <div class="stat-card stat-overall">
+                <div class="stat-icon">🏦</div>
+                <div class="stat-info">
+                    <span class="stat-label">OVERALL Balance</span>
+                    <span class="stat-value" id="statOverall">₹0</span>
+                </div>
+            </div>
+            <div class="stat-card stat-suhas">
+                <div class="stat-icon">👤</div>
+                <div class="stat-info">
+                    <span class="stat-label">SUHAS Balance</span>
+                    <span class="stat-value" id="statSuhas">₹0</span>
+                </div>
+            </div>
+            <div class="stat-card stat-total">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Net Worth</span>
+                    <span class="stat-value" id="statTotal">₹0</span>
+                </div>
+            </div>
+            <div class="stat-card stat-credited">
+                <div class="stat-icon">📈</div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Credited</span>
+                    <span class="stat-value" id="statCredited">₹0</span>
+                </div>
+            </div>
+            <div class="stat-card stat-debited">
+                <div class="stat-icon">📉</div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Debited</span>
+                    <span class="stat-value" id="statDebited">₹0</span>
+                </div>
+            </div>
+            <div class="stat-card stat-monthly">
+                <div class="stat-icon">🗓️</div>
+                <div class="stat-info">
+                    <span class="stat-label">Debited This Month</span>
+                    <span class="stat-value" id="statMonthly">₹0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spreadsheet Section -->
+        <section class="spreadsheet-section">
+            <div class="section-header">
+                <h2>📋 Transaction Ledger</h2>
+                <div id="bulkActions" class="bulk-actions hidden">
+                    <span id="selectedCount">0 selected</span>
+                    <button id="btnBulkDelete" class="btn-bulk-delete">🗑️ Delete Selected</button>
+                    <div class="bulk-divider"></div>
+                </div>
+                <div class="section-actions">
+                    <select id="filterProfile" class="filter-select">
+                        <option value="all">👥 All Profiles</option>
+                        <option value="OVERALL">🏦 OVERALL</option>
+                        <option value="SUHAS">👤 SUHAS</option>
+                    </select>
+                    <select id="filterCategory" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="Food">🍔 Food</option>
+                        <option value="Transport">🚗 Transport</option>
+                        <option value="Shopping">🛍️ Shopping</option>
+                        <option value="Bills">📄 Bills</option>
+                        <option value="Entertainment">🎮 Entertainment</option>
+                        <option value="Health">💊 Health</option>
+                        <option value="Education">📚 Education</option>
+                        <option value="Salary">💼 Salary</option>
+                        <option value="Freelance">💻 Freelance</option>
+                        <option value="Investment">📊 Investment</option>
+                        <option value="Other">📌 Other</option>
+                    </select>
+                    <button class="btn btn-secondary" id="importBtn">
+                        <span class="btn-icon">📥</span> Import File
+                    </button>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.pdf" hidden>
+                    <button class="btn btn-danger" id="deleteAllBtn">
+                        <span class="btn-icon">🗑️</span> Delete All
+                    </button>
+                    <button class="btn btn-primary" id="addRowBtn">
+                        <span class="btn-icon">+</span> Add Entry
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="ledger-table" id="ledgerTable">
+                    <thead>
+                        <tr>
+                            <th class="col-check"><input type="checkbox" id="selectAll" title="Select All"></th>
+                            <th class="col-sno">#</th>
+                            <th class="col-date">Date</th>
+                            <th class="col-profile">Profile</th>
+                            <th class="col-desc">Description</th>
+                            <th class="col-category">Category</th>
+                            <th class="col-credit">Credit (₹)</th>
+                            <th class="col-debit">Debit (₹)</th>
+                            <th class="col-balance">Balance (₹)</th>
+                            <th class="col-actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledgerBody">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">📝</div>
+                    <p>No transactions yet. Click <strong>"Add Entry"</strong> to get started!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="chart-card">
+                <h3>📊 Category Breakdown</h3>
+                <div class="chart-container">
+                    <canvas id="pieChart" width="300" height="300"></canvas>
+                    <div class="pie-legend" id="pieLegend"></div>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>📈 Last 7 Days Spending</h3>
+                <div class="chart-container">
+                    <canvas id="barChart" width="500" height="300"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>MoneyFlow &copy; 2026 — All data stored locally in your browser</p>
+        </footer>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal-overlay" id="importModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>📥 Import Excel Data</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-hint">Map your spreadsheet columns to the fields below. We detected these columns:</p>
+                <div class="mapping-grid" id="mappingGrid">
+                    <!-- Dynamically populated -->
+                </div>
+                <div class="import-preview">
+                    <p class="preview-label">Preview (<span id="previewCount">0</span> rows detected)</p>
+                    <div class="preview-table-wrap">
+                        <table class="preview-table" id="previewTable">
+                            <thead>
+                                <tr id="previewHead"></tr>
+                            </thead>
+                            <tbody id="previewBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalCancel">Cancel</button>
+                <button class="btn btn-primary" id="modalImport">Import All</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
+    <script>
+        // Pre-load pdf.js for use in app.js
+        window.pdfjsReady = import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs').then(mod => {
+            mod.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+            window.pdfjsLib = mod;
+            return mod;
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+
+</html>
